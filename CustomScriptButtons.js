@@ -8,13 +8,13 @@
     {
       id: "script1",
       label: "PA Automater",
-      filePath: "I:\\Apprentice's Scripts\\pa-automater-3000.vbs"
+      filePath: "I:\\Apprentice's Scripts\\pa-automater-3000.vbs",
     },
     {
       id: "script2",
-      label: "3YearLossScope",
-      filePath: "I:\\Apprentice's Scripts\\3YearLossScope.vbs"
-    }
+      label: "Check for 3rd Year",
+      filePath: "I:\\Apprentice's Scripts\\3YearLossScope.vbs",
+    },
   ];
 
   /**********************************************************************
@@ -44,7 +44,10 @@ End Sub`;
     const url = URL.createObjectURL(blob);
 
     // Convert target script name into a .bbs wrapper filename
-    const baseName = filePath.split("\\").pop().replace(/\.(vbs|bbs)$/i, "");
+    const baseName = filePath
+      .split("\\")
+      .pop()
+      .replace(/\.(vbs|bbs)$/i, "");
     const downloadName = `${baseName}.bbs`;
 
     const a = document.createElement("a");
@@ -86,7 +89,7 @@ End Sub`;
 
     // Insert before "Other ERIE Systems" if present
     const otherSystemsLabel = mainframeRoot.querySelector(
-      'label.row.col-xs-12.paddingleftVI'
+      "label.row.col-xs-12.paddingleftVI"
     );
 
     if (otherSystemsLabel) {
@@ -157,7 +160,9 @@ End Sub`;
 
         // Keep buttons alive if the portal re-renders
         const observer = new MutationObserver(() => {
-          const stillExists = document.querySelector("#tm-custom-mainframe-buttons");
+          const stillExists = document.querySelector(
+            "#tm-custom-mainframe-buttons"
+          );
           if (
             stillExists &&
             stillExists.children.length !== CUSTOM_MAINFRAME_BUTTONS.length
