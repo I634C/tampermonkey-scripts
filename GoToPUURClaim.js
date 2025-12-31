@@ -7,14 +7,17 @@ let claimNumber = document
 
 function createBbsContent(policyNumber, claimNumber) {
   return `Option Explicit
+
 Dim MFScreen As Object
 Set MFScreen = CreateObject("BZWhll.WhllObj")
+
 MFScreen.Connect ""
 MFScreen.WaitReady 5, 0
+
 Dim PolicyNumber, ClaimNumber
 PolicyNumber = "${policyNumber}"
 ClaimNumber  = "${claimNumber}"
-GoToClaim
+
 Sub GoToClaim()
     Dim IsOnClaimsScreen, IsOnClaimsDetailScreen
     IsOnClaimsScreen = ReadAt(18, 6, 31)
@@ -28,18 +31,22 @@ Sub GoToClaim()
     MFScreen.SendKeys "A<Enter>"
     MFScreen.WaitReady 5, 1
     Dim CurrentClaimNumber
-    CurrentClaimNumber = GetClaimNum()
-    Do While (Trim(CurrentClaimNumber) <> ClaimNumber And Trim(CurrentClaimNumber) = "")
-        MsgBox CurrentClaimNumber & "  " & ClaimNumber
-        MFScreen.SendKeys "<Enter>"
-        MFScreen.WaitReady 5, 1
+    While True
         CurrentClaimNumber = GetClaimNum()
-    Loop 
+        If (CurrentClaimNumber = ClaimNumber) Then
+            Exit Sub
+        ElseIf (CurrentClaimNumber = "") Then
+            Exit Sub
+        Else
+            MFScreen.SendKeys "<Enter>"
+            MFScreen.WaitReady 5, 1
+        End If
+    Wend 
 End Sub
 Function GetClaimNum()
-    GetClaimNum = ReadAt(13, 7, 9)
+    GetClaimNum = Trim(ReadAt(13, 7, 9))
 End Function
-Private Function ReadAt(row, col, length)
+Private Function ReadAt(length, row, col)
     Dim buf
     MFScreen.ReadScreen buf, length, row, col
     ReadAt = buf
